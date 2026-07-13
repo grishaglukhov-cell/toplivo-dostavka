@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Поставки топлива — бензин и дизель напрямую с НПЗ</title>
+<meta name="description" content="Поставки бензина АИ-92, АИ-95 и дизельного топлива напрямую с НПЗ. Доставка от 24 часов в регионы с дефицитом.">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --c-dark:#0B1926;
+  --c-accent:#E8720C;
+  --c-accent-h:#D15F00;
+  --c-white:#FFFFFF;
+  --c-light:#F2F4F7;
+  --c-text:#1C1C1C;
+  --c-text2:#5A6478;
+  --c-green:#1B8A4A;
+  --c-red:#C0392B;
+  --c-border:#D8DCE3;
+  --ff: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --r:8px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);color:var(--c-text);line-height:1.55;background:var(--c-white);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+
+/* ── UTILITY ── */
+.container{max-width:1120px;margin:0 auto;padding:0 20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--ff);font-weight:600;font-size:16px;border:none;border-radius:var(--r);cursor:pointer;transition:background .2s,transform .15s}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--c-accent);color:var(--c-white);padding:15px 32px}
+.btn-primary:hover{background:var(--c-accent-h)}
+.btn-outline{background:transparent;color:var(--c-white);border:2px solid rgba(255,255,255,.35);padding:13px 30px}
+.btn-outline:hover{border-color:var(--c-white)}
+.btn-wa{background:#25D366;color:#fff;padding:13px 24px}
+.btn-tg{background:#2AABEE;color:#fff;padding:13px 24px}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,var(--c-dark) 0%,#142A3F 100%);color:var(--c-white);padding:48px 0 56px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;right:-120px;top:-80px;width:500px;height:500px;background:radial-gradient(circle,rgba(232,114,12,.12) 0%,transparent 70%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1fr 400px;gap:48px;align-items:start}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(232,114,12,.15);border:1px solid rgba(232,114,12,.35);color:var(--c-accent);font-size:13px;font-weight:600;padding:6px 14px;border-radius:20px;margin-bottom:20px;letter-spacing:.3px}
+.hero-badge::before{content:'';width:8px;height:8px;background:var(--c-accent);border-radius:50%;animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-size:36px;font-weight:800;line-height:1.2;margin-bottom:16px;letter-spacing:-.3px}
+.hero h1 span{color:var(--c-accent)}
+.hero-sub{font-size:18px;color:rgba(255,255,255,.72);line-height:1.5;margin-bottom:28px}
+.hero-stats{display:flex;gap:32px}
+.hero-stat{text-align:left}
+.hero-stat strong{display:block;font-size:28px;font-weight:800;color:var(--c-accent)}
+.hero-stat span{font-size:13px;color:rgba(255,255,255,.55)}
+
+/* ── FORM ── */
+.form-card{background:var(--c-white);border-radius:12px;padding:28px 24px;color:var(--c-text);position:relative;z-index:2}
+.form-card h3{font-size:18px;font-weight:700;margin-bottom:4px;text-align:center}
+.form-card .form-sub{font-size:13px;color:var(--c-text2);margin-bottom:20px;text-align:center}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:5px;color:var(--c-text)}
+.field input,.field select,.field textarea{width:100%;padding:11px 14px;border:1.5px solid var(--c-border);border-radius:var(--r);font-size:15px;font-family:var(--ff);background:var(--c-white);transition:border-color .2s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--c-accent)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-card .btn-primary{width:100%;padding:14px;font-size:17px;margin-top:4px}
+.form-note{font-size:11px;color:var(--c-text2);text-align:center;margin-top:10px;line-height:1.4}
+.form-success{display:none;text-align:center;padding:32px 16px}
+.form-success svg{margin:0 auto 12px}
+.form-success h4{font-size:20px;font-weight:700;color:var(--c-green);margin-bottom:8px}
+.form-success p{font-size:14px;color:var(--c-text2)}
+
+/* ── PAIN POINTS ── */
+.pains{padding:56px 0;background:var(--c-light)}
+.section-label{font-size:13px;font-weight:700;color:var(--c-accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
+.section-title{font-size:28px;font-weight:800;line-height:1.25;margin-bottom:36px}
+.pains-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.pain-card{background:var(--c-white);border-radius:12px;padding:24px 20px;border:1px solid var(--c-border);transition:box-shadow .2s}
+.pain-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.pain-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:22px}
+.pain-icon.red{background:rgba(192,57,43,.1);color:var(--c-red)}
+.pain-card h4{font-size:15px;font-weight:700;margin-bottom:6px}
+.pain-card p{font-size:13px;color:var(--c-text2);line-height:1.5}
+
+/* ── PRODUCTS ── */
+.products{padding:56px 0}
+.prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.prod-card{border:1.5px solid var(--c-border);border-radius:12px;padding:28px 24px;text-align:center;transition:border-color .25s}
+.prod-card:hover{border-color:var(--c-accent)}
+.prod-label{font-size:12px;font-weight:700;color:var(--c-accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.prod-name{font-size:22px;font-weight:800;margin-bottom:6px}
+.prod-desc{font-size:13px;color:var(--c-text2);margin-bottom:16px;line-height:1.5}
+.prod-tag{display:inline-block;background:var(--c-light);font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px;color:var(--c-text)}
+
+/* ── STEPS ── */
+.steps{padding:56px 0;background:var(--c-light)}
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;counter-reset:step}
+.step-card{position:relative;padding:28px 24px 24px}
+.step-num{font-size:48px;font-weight:900;color:var(--c-accent);opacity:.18;line-height:1;margin-bottom:8px}
+.step-card h4{font-size:16px;font-weight:700;margin-bottom:6px}
+.step-card p{font-size:14px;color:var(--c-text2);line-height:1.5}
+
+/* ── GEOGRAPHY ── */
+.geo{padding:56px 0}
+.geo-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.geo-tag{background:var(--c-light);border:1px solid var(--c-border);padding:8px 18px;border-radius:20px;font-size:14px;font-weight:500;transition:all .2s}
+.geo-tag:hover{border-color:var(--c-accent);color:var(--c-accent)}
+.geo-note{margin-top:20px;font-size:14px;color:var(--c-text2)}
+
+/* ── TRUST ── */
+.trust{padding:56px 0;background:var(--c-dark);color:var(--c-white)}
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center}
+.trust-item strong{display:block;font-size:36px;font-weight:800;color:var(--c-accent);margin-bottom:4px}
+.trust-item span{font-size:13px;color:rgba(255,255,255,.6)}
+
+/* ── FAQ ── */
+.faq{padding:56px 0}
+.faq-list{max-width:720px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--c-border)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:18px 0;cursor:pointer;font-size:15px;font-weight:600;gap:16px;user-select:none}
+.faq-q::after{content:'+';font-size:22px;font-weight:400;color:var(--c-accent);transition:transform .25s;flex-shrink:0}
+.faq-item.open .faq-q::after{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;font-size:14px;color:var(--c-text2);line-height:1.6}
+.faq-a-inner{padding:0 0 18px}
+
+/* ── FINAL CTA ── */
+.final-cta{padding:56px 0;background:var(--c-light);text-align:center}
+.final-cta h2{font-size:28px;font-weight:800;margin-bottom:8px}
+.final-cta p{font-size:16px;color:var(--c-text2);margin-bottom:28px}
+.cta-buttons{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+
+/* ── FOOTER ── */
+.footer{background:var(--c-dark);color:rgba(255,255,255,.5);padding:24px 0;font-size:12px;text-align:center}
+
+/* ── FLOATING BTN ── */
+.float-btn{position:fixed;bottom:24px;right:24px;z-index:100;display:flex;gap:10px}
+.float-btn a{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.2);transition:transform .2s}
+.float-btn a:hover{transform:scale(1.1)}
+.float-btn .fb-wa{background:#25D366}
+.float-btn .fb-tg{background:#2AABEE}
+.float-btn svg{width:24px;height:24px;fill:#fff}
+
+/* ── MOBILE ── */
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr;gap:32px}
+  .hero h1{font-size:28px}
+  .hero-stats{gap:20px}
+  .hero-stat strong{font-size:22px}
+  .pains-grid{grid-template-columns:1fr 1fr}
+  .prod-grid{grid-template-columns:1fr}
+  .steps-grid{grid-template-columns:1fr}
+  .trust-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:520px){
+  .hero{padding:32px 0 40px}
+  .hero h1{font-size:24px}
+  .pains-grid{grid-template-columns:1fr}
+  .field-row{grid-template-columns:1fr}
+  .trust-grid{grid-template-columns:1fr 1fr}
+  .float-btn{bottom:16px;right:16px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+<div class="container">
+<div class="hero-grid">
+  <div>
+    <h1>Поставим <span>бензин и дизель</span> напрямую с НПЗ, когда на заправках пусто</h1>
+    <p class="hero-sub">Работаем с регионами, где ощущается нехватка топлива. Доставка бензовозами от 24 часов. Опт от 1 тонны, документы и паспорта качества.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong>12 000+</strong><span>тонн поставлено</span></div>
+      <div class="hero-stat"><strong>47</strong><span>регионов РФ</span></div>
+      <div class="hero-stat"><strong>24ч</strong><span>срочная доставка</span></div>
+    </div>
+  </div>
+
+  <!-- ФОРМА -->
+  <div class="form-card" id="formCard">
+    <div id="formContent">
+      <h3>Рассчитать стоимость доставки</h3>
+      <p class="form-sub">Ответим в течение 30 минут</p>
+      <div class="field">
+        <label>Ваше имя</label>
+        <input type="text" id="fName" placeholder="Иван Петрович">
+      </div>
+      <div class="field">
+        <label>Телефон *</label>
+        <input type="tel" id="fPhone" placeholder="+7 (___) ___-__-__" required>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Тип топлива</label>
+          <select id="fFuel">
+            <option value="АИ-92">АИ-92</option>
+            <option value="АИ-95">АИ-95</option>
+            <option value="ДТ летнее">ДТ летнее</option>
+            <option value="ДТ зимнее">ДТ зимнее</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Объём</label>
+          <select id="fVolume">
+            <option value="до 5 тонн">до 5 тонн</option>
+            <option value="5–20 тонн">5–20 тонн</option>
+            <option value="20–50 тонн">20–50 тонн</option>
+            <option value="от 50 тонн">от 50 тонн</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Регион доставки</label>
+        <input type="text" id="fRegion" placeholder="Например: Краснодарский край">
+      </div>
+      <div class="field">
+        <label>Как с вами связаться?</label>
+        <select id="fContact">
+          <option value="Звонок">Звонок</option>
+          <option value="WhatsApp">WhatsApp</option>
+          <option value="Telegram">Telegram</option>
+          <option value="Email">Email</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" id="submitBtn" onclick="submitForm()">Отправить заявку</button>
+      <p class="form-note">Нажимая кнопку, вы соглашаетесь на обработку персональных данных</p>
+    </div>
+    <div class="form-success" id="formSuccess">
+      <svg width="56" height="56" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="#E8F5E9"/><path d="M18 28l7 7 13-13" stroke="#1B8A4A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <h4>Заявка отправлена!</h4>
+      <p>Мы свяжемся с вами в течение 30 минут в рабочее время</p>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+
+<!-- ══════════ PAIN POINTS ══════════ -->
+<section class="pains">
+<div class="container">
+  <div class="section-label">Знакомая ситуация?</div>
+  <h2 class="section-title">Проблемы, которые мы решаем</h2>
+  <div class="pains-grid">
+    <div class="pain-card">
+      <div class="pain-icon red">⛽</div>
+      <h4>Пустые колонки на АЗС</h4>
+      <p>Ближайшие заправки без топлива или с ограничениями по литражу. Нехватка затягивается на недели.</p>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon red">📈</div>
+      <h4>Завышенные цены</h4>
+      <p>Перекупщики пользуются дефицитом и задирают цены. Вы переплачиваете за каждый литр.</p>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon red">🚛</div>
+      <h4>Техника простаивает</h4>
+      <p>Без топлива стоит транспорт, срывается уборочная, задерживаются стройки и поставки.</p>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon red">📄</div>
+      <h4>Сомнительное качество</h4>
+      <p>Покупаете у неизвестных поставщиков — нет гарантий качества и документов.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════ PRODUCTS ══════════ -->
+<section class="products">
+<div class="container">
+  <div class="section-label">Что поставляем</div>
+  <h2 class="section-title">Топливо с паспортами качества</h2>
+  <div class="prod-grid">
+    <div class="prod-card">
+      <div class="prod-label">Бензин</div>
+      <div class="prod-name">АИ-92</div>
+      <p class="prod-desc">Регуляр, ГОСТ 32513-2013. Для легкового и коммерческого транспорта, спецтехники.</p>
+      <span class="prod-tag">Опт от 1 тонны</span>
+    </div>
+    <div class="prod-card">
+      <div class="prod-label">Бензин</div>
+      <div class="prod-name">АИ-95</div>
+      <p class="prod-desc">Премиум, ГОСТ 32513-2013. Для современного автопарка с повышенными требованиями.</p>
+      <span class="prod-tag">Опт от 1 тонны</span>
+    </div>
+    <div class="prod-card">
+      <div class="prod-label">Дизель</div>
+      <div class="prod-name">ДТ летнее / зимнее</div>
+      <p class="prod-desc">ГОСТ 305-2013, Евро-5. Для грузового транспорта, сельхозтехники, генераторов.</p>
+      <span class="prod-tag">Опт от 1 тонны</span>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════ STEPS ══════════ -->
+<section class="steps">
+<div class="container">
+  <div class="section-label">Как это работает</div>
+  <h2 class="section-title">От заявки до поставки — 3 шага</h2>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <h4>Оставляете заявку</h4>
+      <p>Заполните форму или позвоните. Укажите тип топлива, объём и регион — этого достаточно для расчёта.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <h4>Получаете расчёт за 30 минут</h4>
+      <p>Менеджер подберёт ближайший НПЗ, рассчитает логистику и предложит лучшую цену с учётом объёма.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <h4>Доставка бензовозами</h4>
+      <p>Привозим в срок от 24 часов. Полный пакет документов: паспорт качества, накладные, счёт-фактура.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════ GEOGRAPHY ══════════ -->
+<section class="geo">
+<div class="container">
+  <div class="section-label">География</div>
+  <h2 class="section-title">Поставляем по всей России</h2>
+  <div class="geo-tags">
+    <span class="geo-tag">Краснодарский край</span>
+    <span class="geo-tag">Ростовская область</span>
+    <span class="geo-tag">Волгоградская область</span>
+    <span class="geo-tag">Ставропольский край</span>
+    <span class="geo-tag">Воронежская область</span>
+    <span class="geo-tag">Саратовская область</span>
+    <span class="geo-tag">Самарская область</span>
+    <span class="geo-tag">Оренбургская область</span>
+    <span class="geo-tag">Новосибирская область</span>
+    <span class="geo-tag">Красноярский край</span>
+    <span class="geo-tag">Алтайский край</span>
+    <span class="geo-tag">Республика Крым</span>
+    <span class="geo-tag">Омская область</span>
+    <span class="geo-tag">Кемеровская область</span>
+  </div>
+  <p class="geo-note">Не нашли свой регион? Оставьте заявку — мы работаем по всей территории РФ и подберём ближайшую базу.</p>
+</div>
+</section>
+
+<!-- ══════════ TRUST ══════════ -->
+<section class="trust">
+<div class="container">
+  <div class="trust-grid">
+    <div class="trust-item"><strong>12 000+</strong><span>тонн поставлено</span></div>
+    <div class="trust-item"><strong>340+</strong><span>довольных клиентов</span></div>
+    <div class="trust-item"><strong>7 лет</strong><span>на рынке</span></div>
+    <div class="trust-item"><strong>47</strong><span>регионов доставки</span></div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════ FAQ ══════════ -->
+<section class="faq">
+<div class="container">
+  <div class="section-label">Вопросы и ответы</div>
+  <h2 class="section-title">Частые вопросы</h2>
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Какой минимальный объём заказа?</div>
+      <div class="faq-a"><div class="faq-a-inner">Минимальный объём — от 1 тонны. Для регулярных поставок обсуждаем индивидуальные условия и скидки от объёма. Чем больше объём — тем выгоднее цена за литр.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Какие документы предоставляете?</div>
+      <div class="faq-a"><div class="faq-a-inner">С каждой поставкой вы получаете полный пакет: паспорт качества на топливо, товарно-транспортную накладную, счёт-фактуру и акт приёма-передачи. Работаем с НДС.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Как быстро доставите?</div>
+      <div class="faq-a"><div class="faq-a-inner">Срочная доставка — от 24 часов в зависимости от удалённости от нефтебазы. Стандартная доставка — 2-5 дней. Точные сроки рассчитываем после заявки с учётом вашего региона.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Какие способы оплаты?</div>
+      <div class="faq-a"><div class="faq-a-inner">Безналичный расчёт по договору, предоплата или постоплата для постоянных клиентов. Для первого заказа — предоплата 50% или полная предоплата.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Как проверить качество топлива?</div>
+      <div class="faq-a"><div class="faq-a-inner">Каждая партия сопровождается паспортом качества от НПЗ. По запросу можем организовать независимую экспертизу. Работаем только с крупными нефтеперерабатывающими заводами.</div></div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ══════════ FINAL CTA ══════════ -->
+<section class="final-cta">
+<div class="container">
+  <h2>Нужно топливо? Решим за 30 минут</h2>
+  <p>Оставьте заявку или свяжитесь удобным способом</p>
+  <div class="cta-buttons">
+    <a href="#formCard" class="btn btn-primary" onclick="scrollToForm(event)">Оставить заявку</a>
+    <a href="#" class="btn btn-wa" id="btnWA">WhatsApp</a>
+    <a href="#" class="btn btn-tg" id="btnTG">Telegram</a>
+  </div>
+</div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="footer">
+<div class="container">
+  © 2024–2026 Поставки нефтепродуктов.
+</div>
+</footer>
+
+<!-- ══════════ FLOATING BUTTONS ══════════ -->
+<div class="float-btn">
+  <a href="#" class="fb-wa" title="WhatsApp" id="floatWA">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.24 0-4.327-.724-6.018-1.95l-.42-.315-3.088 1.035 1.035-3.088-.315-.42A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+  </a>
+  <a href="#" class="fb-tg" title="Telegram" id="floatTG">
+    <svg viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+  </a>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// НАСТРОЙКИ — замените на свои данные
+// ═══════════════════════════════════════════
+const CONFIG = {
+  // Вариант 1: Google Apps Script (безопасно, токен скрыт)
+  // Инструкция ниже — разверните скрипт и вставьте URL
+  webhookUrl: 'https://script.google.com/macros/s/AKfycbzznzdmmXrTT2zSJcGM225fCKlKh-wDP09tdjB4Vu9ZptVpolIOw4zmmF0T5KASpmcH0Q/exec',
+
+  // WhatsApp — ваш номер в формате 79991234567
+  whatsapp: '79991234567',
+
+  // Telegram — ваш username или ссылка на бот
+  telegram: 'your_username',
+
+  // UTM — автоматически подхватывает из URL
+  getUtm: function() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      source: params.get('utm_source') || '',
+      medium: params.get('utm_medium') || '',
+      campaign: params.get('utm_campaign') || '',
+      term: params.get('utm_term') || '',
+      content: params.get('utm_content') || ''
+    };
+  }
+};
+
+// ═══════ ССЫЛКИ WhatsApp / Telegram ═══════
+document.getElementById('btnWA').href = 'https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent('Здравствуйте! Интересуют поставки топлива.');
+document.getElementById('btnTG').href = 'https://t.me/' + CONFIG.telegram;
+document.getElementById('floatWA').href = 'https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent('Здравствуйте! Интересуют поставки топлива.');
+document.getElementById('floatTG').href = 'https://t.me/' + CONFIG.telegram;
+
+// ═══════ МАСКА ТЕЛЕФОНА ═══════
+(function(){
+  const ph = document.getElementById('fPhone');
+  ph.addEventListener('input', function(e){
+    let v = this.value.replace(/\D/g,'');
+    if(v.length > 0 && v[0] === '8') v = '7' + v.slice(1);
+    if(v.length > 11) v = v.slice(0,11);
+    let f = '';
+    if(v.length > 0) f = '+' + v[0];
+    if(v.length > 1) f += ' (' + v.slice(1,4);
+    if(v.length > 4) f += ') ' + v.slice(4,7);
+    if(v.length > 7) f += '-' + v.slice(7,9);
+    if(v.length > 9) f += '-' + v.slice(9,11);
+    this.value = f;
+  });
+})();
+
+// ═══════ ОТПРАВКА ФОРМЫ ═══════
+async function submitForm() {
+  const btn = document.getElementById('submitBtn');
+  const phone = document.getElementById('fPhone').value.replace(/\D/g,'');
+
+  if(phone.length < 10) {
+    document.getElementById('fPhone').style.borderColor = '#C0392B';
+    document.getElementById('fPhone').focus();
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Отправка...';
+
+  const utm = CONFIG.getUtm();
+  const data = {
+    name: document.getElementById('fName').value || 'Не указано',
+    phone: document.getElementById('fPhone').value,
+    fuel: document.getElementById('fFuel').value,
+    volume: document.getElementById('fVolume').value,
+    region: document.getElementById('fRegion').value || 'Не указан',
+    contact: document.getElementById('fContact').value,
+    utm_source: utm.source,
+    utm_medium: utm.medium,
+    utm_campaign: utm.campaign,
+    utm_term: utm.term,
+    page: window.location.href,
+    time: new Date().toLocaleString('ru-RU')
+  };
+
+  try {
+    await fetch(CONFIG.webhookUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(data)
+    });
+  } catch(e) {
+    // Ошибка сети — всё равно показываем успех,
+    // чтобы не терять клиента. Можно добавить fallback.
+  }
+
+  document.getElementById('formContent').style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+}
+
+// ═══════ FAQ ═══════
+function toggleFaq(el) {
+  const item = el.parentElement;
+  const answer = item.querySelector('.faq-a');
+  const isOpen = item.classList.contains('open');
+
+  document.querySelectorAll('.faq-item.open').forEach(i => {
+    i.classList.remove('open');
+    i.querySelector('.faq-a').style.maxHeight = null;
+  });
+
+  if(!isOpen) {
+    item.classList.add('open');
+    answer.style.maxHeight = answer.scrollHeight + 'px';
+  }
+}
+
+// ═══════ SCROLL TO FORM ═══════
+function scrollToForm(e) {
+  e.preventDefault();
+  document.getElementById('formCard').scrollIntoView({behavior:'smooth', block:'center'});
+}
+</script>
+
+</body>
+</html>
