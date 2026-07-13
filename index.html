@@ -1083,6 +1083,14 @@
       document.getElementById("btnTG").href = "https://t.me/" + CONFIG.telegram;
       document.getElementById("floatTG").href =
         "https://t.me/" + CONFIG.telegram;
+      document.getElementById("btnTG").addEventListener("click", function () {
+        if (typeof ym === "function")
+          ym(110660999, "reachGoal", "telegram_click");
+      });
+      document.getElementById("floatTG").addEventListener("click", function () {
+        if (typeof ym === "function")
+          ym(110660999, "reachGoal", "telegram_click");
+      });
 
       // ═══════ МАСКА ТЕЛЕФОНА ═══════
       (function () {
@@ -1147,6 +1155,7 @@
 
         document.getElementById("formContent").style.display = "none";
         document.getElementById("formSuccess").style.display = "block";
+        if (typeof ym === "function") ym(110660999, "reachGoal", "lead_form");
       }
 
       // ═══════ FAQ ═══════
